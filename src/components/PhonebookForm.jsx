@@ -12,8 +12,7 @@ class PhonebookForm extends Component {
     evt.preventDefault();
 
     const { onSubmit } = this.props;
-    const result = onSubmit({ ...this.state });
-
+    onSubmit({ ...this.state });
     this.reset();
   };
 
