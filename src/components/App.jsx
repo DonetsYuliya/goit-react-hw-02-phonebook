@@ -18,6 +18,9 @@ class PhonebookClass extends Component {
   };
 
   addNewContact = ({ name, number }) => {
+    if (this.isDublicate(name)) {
+      return alert(`${name} is already in contacts`);
+    }
     this.setState(prevState => {
       const { contacts } = prevState;
 
@@ -48,24 +51,35 @@ class PhonebookClass extends Component {
     return result;
   }
 
+  isDublicate(name) {
+    const normalizedName = name.toLowerCase();
+    const { contacts } = this.state;
+    const result = contacts.find(({ name }) => {
+      return name.toLowerCase() === normalizedName;
+    });
+
+    return Boolean(result);
+  }
+
+  removeContact = id => {
+    this.setState(({ contacts }) => {
+      const updateContacts = contacts.filter(contact => contact.id !== id);
+      return { contacts: updateContacts };
+    });
+  };
+
   render() {
-    const { addNewContact, handleFilter } = this;
+    const { addNewContact, handleFilter, removeContact } = this;
     const contacts = this.getFilteredContacts();
 
     return (
-      <>
-        <h2 className={css.title}>Phonebook</h2>
+      <div>
+        <h1 className={css.title}>Phonebook</h1>
         <PhonebookForm onSubmit={addNewContact} />
-
         <h2 className={css.title}>Contacts</h2>
         <ContactsFilter handleFilter={handleFilter} />
-
-        <ul>
-          {contacts.map(({ id, name, number }) => {
-            return <ContactItem key={id} name={name} number={number} />;
-          })}
-        </ul>
-      </>
+        <ContactItem contacts={contacts} removeContact={removeContact} />;
+      </div>
     );
   }
 }
