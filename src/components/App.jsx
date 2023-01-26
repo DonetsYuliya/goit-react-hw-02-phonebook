@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { nanoid } from 'nanoid';
 
 import PhonebookForm from './PhonebookForm';
-import ContactItem from './ContactsList';
+import ContactItem from './ContactsList/ContactsList';
 import ContactsFilter from './ContactsFilter';
 
 class PhonebookClass extends Component {
